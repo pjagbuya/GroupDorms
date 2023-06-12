@@ -5,16 +5,17 @@ public class Room
 		NUM = roomNum;
 		MAX = maxCapacity;
 		guests = new Person[maxCapacity];
+		size = 0;
 	}
 	
 	public boolean addGuest(Person guest)
 	{ 
         int i = 0;
-		while( i < MAX && guests[i] != NULL )
+		while( i < MAX && guests[i] != null )
 			i++;
 		if( i < MAX ) {
 			guests[i] = guest;
-			size++
+			size++;
 			return true;
 		}
 		return false;
@@ -22,7 +23,7 @@ public class Room
 	
 	public boolean isFull()
 	{
-        return size == NUM;
+        return size == MAX;
 	}
 	
 	public boolean isEmpty()
@@ -52,8 +53,8 @@ public class Room
 	
 	public void removeGuest(int index)
 	{
-		if( guests[index] != NULL ) {	
-			guests[index] = NULL;
+		if( guests[index] != null ) {
+			guests[index] = null;
 			size--;
 		}
 	}
