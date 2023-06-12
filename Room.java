@@ -2,18 +2,27 @@ public class Room
 {
 	public Room(int roomNum, int maxCapacity)
 	{
-              //Provide code 
-
+		NUM = roomNum;
+		MAX = maxCapacity;
+		guests = new Person[maxCapacity];
 	}
 	
 	public boolean addGuest(Person guest)
 	{ 
-              //Provide code 
+        int i = 0;
+		while( i < MAX && guests[i] != NULL )
+			i++;
+		if( i < MAX ) {
+			guests[i] = guest;
+			size++
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean isFull()
 	{
-              //Provide code 
+        return size == NUM;
 	}
 	
 	public boolean isEmpty()
@@ -43,7 +52,10 @@ public class Room
 	
 	public void removeGuest(int index)
 	{
-              //Provide code 
+		if( guests[index] != NULL ) {	
+			guests[index] = NULL;
+			size--;
+		}
 	}
 	
 	private final int MAX; //max number of guests
