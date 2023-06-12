@@ -1,11 +1,15 @@
 import java.util.*;
 
 
-/*
-	javac DormDriver.java && javac Room.java && javac Person.java && javac Dormitory.java
-
-*/
-
+/** The class DormDriver simulates building
+  * dorms and people entering dorms and their
+  * rooms
+  
+  * @author Paul Josef P. Agbuya
+  * @author Vince Kenneth D. Rojo
+  * @author Acemere F. Villena
+  * @version 1.0
+  */
 public class DormDriver
 {
     public void display(Room room)
@@ -79,7 +83,6 @@ public class DormDriver
 		DormDriver dormDriver = new DormDriver(); // NEW LINE
 		int i; // NEW LINE
 		int j; // NEW LINE
-		Person[] listOfGuests;
 		//int roomNum; // NEW LINE
 		//Person[] guests; // NEW LINE
 		
@@ -109,13 +112,13 @@ public class DormDriver
 		for( i = 0; i < guests.size(); i++ ) {
 			if( guests.get(i).getNationality().equalsIgnoreCase("Filipino") ) {
 				j = 1;
-				while( j <= dorms[1].getRooms()[0].getMaxCapacity() &&
+				while( j <= dorms[1].getRooms()[0].getGuests().length &&
 					dorms[0].acceptGuest( j, guests.get(i) ) == false)
 					j++;
 				}
 			else {
 				j = 1;
-				while( j <= dorms[1].getRooms()[0].getMaxCapacity() &&
+				while( j <= dorms[1].getRooms()[0].getGuests().length &&
 					dorms[1].acceptGuest( j, guests.get(i) ) == false)
 					j++;
 			}
@@ -135,47 +138,44 @@ public class DormDriver
 			he wants to be assigned to a currently unoccupied
 			room. */
 		System.out.println("\n\nTransfering Ray");
-		for( i = 0; i < dorms[0].getNumberOfRooms(); i++ ) {
-			listOfGuests = dorms[0].getListOfGuests(i+1);
-			for( j = 0; j < dorms[0].getRooms()[i].getMaxCapacity(); j++ )
-				if( listOfGuests[j] != null &&
-					listOfGuests[j].getName().equalsIgnoreCase("Ray") ) {
+		for( i = 0; i < dorms[0].getRooms().length; i++ ) {
+			for( j = 0; j < dorms[0].getRooms()[i].getGuests().length; j++ )
+				if( dorms[0].getRooms()[i].getGuests()[j] != null &&
+					dorms[0].getRooms()[i].getGuests()[j].getName().equalsIgnoreCase("Ray") ) {
 					dorms[0].getRooms()[i].removeGuest(j);
 					break;
 				}
-			if( j < dorms[0].getRooms()[i].getMaxCapacity() )
+			if( j < dorms[0].getRooms()[i].getGuests().length )
 				break;
 		}
 	
 		i = 0;
-		while( i < dorms[1].getNumberOfRooms() && dorms[1].getRooms()[i].isEmpty() == false )
+		while( dorms[1].getRooms()[i].isEmpty() == false )
 			i++;
-		if( i < dorms[1].getNumberOfRooms() )
+		if( i < dorms[1].getRooms().length )
 			dorms[1].acceptGuest( dorms[1].getRooms()[i].getRoomNum(), guests.get(3) );
 	
 	
 		/* Provide code to transfer Michael to the same room 
 		   as Miguel */
 		System.out.println("\n\nTransfering Michael");   
-		for( i = 0; i < dorms[1].getNumberOfRooms(); i++ ) {
-			listOfGuests = dorms[1].getListOfGuests(i+1);
-			for( j = 0; j < dorms[1].getRooms()[i].getMaxCapacity(); j++ )
-				if( listOfGuests[j] != null &&
-					listOfGuests[j].getName().equalsIgnoreCase("Michael") ) {
+		for( i = 0; i < dorms[1].getRooms().length; i++ ) {
+			for( j = 0; j < dorms[1].getRooms()[i].getGuests().length; j++ )
+				if( dorms[1].getRooms()[i].getGuests()[j] != null &&
+					dorms[1].getRooms()[i].getGuests()[j].getName().equalsIgnoreCase("Michael") ) {
 					dorms[1].getRooms()[i].removeGuest(j);
 					break;
 				}
-			if( j < dorms[1].getRooms()[i].getMaxCapacity() )
+			if( j < dorms[1].getRooms()[i].getGuests().length )
 				break;
 		}
 		
-		for( i = 0; i < dorms[0].getNumberOfRooms(); i++ ) {
-			listOfGuests = dorms[0].getListOfGuests(i+1);
-			for( j = 0; j < dorms[0].getRooms()[i].getMaxCapacity(); j++ )
-				if( listOfGuests[j] != null &&
-					listOfGuests[j].getName().equalsIgnoreCase("Miguel") )
+		for( i = 0; i < dorms[0].getRooms().length; i++ ) {
+			for( j = 0; j < dorms[0].getRooms()[i].getGuests().length; j++ )
+				if( dorms[0].getRooms()[i].getGuests()[j] != null &&
+					dorms[0].getRooms()[i].getGuests()[j].getName().equalsIgnoreCase("Miguel") )
 					break;
-			if( j < dorms[0].getRooms()[i].getMaxCapacity() )
+			if( j < dorms[0].getRooms()[i].getGuests().length )
 				break;
 			i++;
 		}
