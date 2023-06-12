@@ -1,5 +1,8 @@
 import java.util.*;
 
+/*
+	javac DormDriver.java && javac Room.java && javac Person.java && javac Dormitory.java
+*/
 
 /** The class DormDriver simulates building
   * dorms and people entering dorms and their
@@ -12,9 +15,9 @@ import java.util.*;
   */
 public class DormDriver
 {
+	/* display all the guests in the given room */
     public void display(Room room)
 	{
-		/* display all the guests in the room */
 		int i;
 		int j;
 		Person[] guests;
@@ -22,6 +25,7 @@ public class DormDriver
 		System.out.println(
 			"Guests in Room No. " + room.getRoomNum());
 		
+		/* displays guests' information, in the order in which they appear in the guests[] array, and numbers them */
 		i = 0;
 		j = 1;
 		while( j <= room.getNumOccupants() && i < room.getMaxCapacity() ) {
@@ -34,6 +38,9 @@ public class DormDriver
 		}
 	}
 	
+	
+	
+	/* displays information about each dormitory */
 	public void displayDorms(Dormitory[] dorms)
 	{
 		int i;
@@ -42,16 +49,16 @@ public class DormDriver
 		
 		System.out.println();
 		
+		/* runs once through the array of dormitories */
 		for (i = 0; i < dorms.length; i++)
 		{
-			/* display the name of the dorm, the total
-			   number of rooms, and the number of rooms
-			   that are not full yet */
+			
+			/* counts no. of rooms that are not full */
 			numberOfNotFullRooms = 0;
 			for( j = 0; j < dorms[i].getNumberOfRooms(); j++ )
 				if( dorms[i].getRooms()[j].isFull() == false )
 					numberOfNotFullRooms++;
-	
+
 			System.out.println(
 				dorms[i].getDormitoryName() +
 				"\nNumber of Rooms: " +
@@ -59,12 +66,7 @@ public class DormDriver
 				"\nNumber of Rooms Not Full: " +
 				numberOfNotFullRooms);
 
-			/* 
-			   Display all the names and nationalities
-			   of the guests in each room. Part of the 
-			   solution is to call the method display() 
-			   in DormDriver. Provide your code */
-
+			/* displays each room's guest list, unless room is empty, in which case it displays a message saying the room is empty */
 			for( j = 0; j < dorms[i].getNumberOfRooms(); j++ )
 				if( dorms[i].getRooms()[j].isEmpty() == false )
 					display( dorms[i].getRooms()[j] );
@@ -80,11 +82,10 @@ public class DormDriver
 	public static void main(String[] args)
 	{
 		Dormitory[] dorms = new Dormitory[2];
-		DormDriver dormDriver = new DormDriver(); // NEW LINE
-		int i; // NEW LINE
-		int j; // NEW LINE
-		//int roomNum; // NEW LINE
-		//Person[] guests; // NEW LINE
+		DormDriver dormDriver = new DormDriver();
+		int i;
+		int j;
+		Person[] listOfGuests;
 		
 		dorms[0] = new Dormitory("LS Dorm", 3);
 		dorms[1] = new Dormitory("STC Dorm", 5, 4);
@@ -100,93 +101,88 @@ public class DormDriver
 		guests.add(new Person("Dennis", "Filipino"));
 		guests.add(new Person("Jaime", "Filipino"));
 		
-		/* Have all Filipinos be in the same room, as
-		   long as they fit.  Following first come, first
-		   served, those who do not fit will be assigned 
-		   to the next room. Use the first dormitory for 
-		   the Filipinos.  For the other nationalities, 
-		   they will be assigned to the second dormitory in
-		   separate rooms. Provide your code.
-		*/
 		
+		/* runs once through the guests ArrayList */
+		/* sorts Filipinos into LS Dorm, filling up the 1st room before filling in the next one*/
+		/* sorts Non-Filipinos into STC Dorm, separating them into different rooms */
 		for( i = 0; i < guests.size(); i++ ) {
 			if( guests.get(i).getNationality().equalsIgnoreCase("Filipino") ) {
-				j = 1;
-				while( j <= dorms[1].getRooms()[0].getGuests().length &&
-					dorms[0].acceptGuest( j, guests.get(i) ) == false)
+				j = 1; // here, j represents room number, not an index
+				while( j <= dorms[0].getRooms()[0].getMaxCapacity() &&
+					dorms[0].acceptGuest( j, guests.get(i) ) == false )
 					j++;
 				}
 			else {
-				j = 1;
-				while( j <= dorms[1].getRooms()[0].getGuests().length &&
-					dorms[1].acceptGuest( j, guests.get(i) ) == false)
-					j++;
+				j = 1; // here, j represents room number, not an index
+				while( j <= dorms[1].getNumberOfRooms() )
+					if( dorms[1].getRooms()[j-1].isEmpty() &&
+						dorms[1].acceptGuest(j, guests.get(i)) )
+						break;
+					else
+						j++;
 			}
 		}
 		
 		
 		
-		/* Provide your code to call displayDorms() in
-		   class DormDriver. */
 		dormDriver.displayDorms(dorms);
- 		   
-
-
-
-
-		/* Provide code to transfer Ray to STC Dorm, and
-			he wants to be assigned to a currently unoccupied
-			room. */
+ 		
+		
+		
 		System.out.println("\n\nTransfering Ray");
-		for( i = 0; i < dorms[0].getRooms().length; i++ ) {
-			for( j = 0; j < dorms[0].getRooms()[i].getGuests().length; j++ )
-				if( dorms[0].getRooms()[i].getGuests()[j] != null &&
-					dorms[0].getRooms()[i].getGuests()[j].getName().equalsIgnoreCase("Ray") ) {
+		
+		/* finds 1st guest named "Ray" in LS Dorm and deletes him */
+		for( i = 0; i < dorms[0].getNumberOfRooms(); i++ ) {
+			listOfGuests = dorms[0].getListOfGuests(i+1);
+			for( j = 0; j < dorms[0].getRooms()[i].getMaxCapacity(); j++ )
+				if( listOfGuests[j] != null &&
+					listOfGuests[j].getName().equalsIgnoreCase("Ray") ) {
 					dorms[0].getRooms()[i].removeGuest(j);
 					break;
 				}
-			if( j < dorms[0].getRooms()[i].getGuests().length )
+			if( j < dorms[0].getRooms()[i].getMaxCapacity() )
 				break;
 		}
-	
+		/* adds Ray to 1st empty room in STC Dorm */
 		i = 0;
-		while( dorms[1].getRooms()[i].isEmpty() == false )
+		while( i < dorms[1].getNumberOfRooms() &&
+			dorms[1].getRooms()[i].isEmpty() == false )
 			i++;
-		if( i < dorms[1].getRooms().length )
-			dorms[1].acceptGuest( dorms[1].getRooms()[i].getRoomNum(), guests.get(3) );
-	
-	
-		/* Provide code to transfer Michael to the same room 
-		   as Miguel */
-		System.out.println("\n\nTransfering Michael");   
-		for( i = 0; i < dorms[1].getRooms().length; i++ ) {
-			for( j = 0; j < dorms[1].getRooms()[i].getGuests().length; j++ )
-				if( dorms[1].getRooms()[i].getGuests()[j] != null &&
-					dorms[1].getRooms()[i].getGuests()[j].getName().equalsIgnoreCase("Michael") ) {
+		dorms[1].acceptGuest( i+1, guests.get(3) );
+		
+		
+		
+		
+		System.out.println("\n\nTransfering Michael");
+		
+		/* finds 1st guest named "Michael" in STC Dorm and deletes him */
+		for( i = 0; i < dorms[1].getNumberOfRooms(); i++ ) {
+			listOfGuests = dorms[1].getListOfGuests(i+1);
+			for( j = 0; j < dorms[1].getRooms()[i].getMaxCapacity(); j++ )
+				if( listOfGuests[j] != null &&
+					listOfGuests[j].getName().equalsIgnoreCase("Michael") ) {
 					dorms[1].getRooms()[i].removeGuest(j);
 					break;
 				}
-			if( j < dorms[1].getRooms()[i].getGuests().length )
+			if( j < dorms[1].getRooms()[i].getMaxCapacity() )
 				break;
 		}
-		
-		for( i = 0; i < dorms[0].getRooms().length; i++ ) {
-			for( j = 0; j < dorms[0].getRooms()[i].getGuests().length; j++ )
-				if( dorms[0].getRooms()[i].getGuests()[j] != null &&
-					dorms[0].getRooms()[i].getGuests()[j].getName().equalsIgnoreCase("Miguel") )
+		/* adds Michael to 1st room in LS Dorm with a "Miguel" */
+		for( i = 0; i < dorms[0].getNumberOfRooms(); i++ ) {
+			listOfGuests = dorms[0].getListOfGuests(i+1);
+			for( j = 0; j < dorms[0].getRooms()[i].getMaxCapacity(); j++ )
+				if( listOfGuests[j] != null &&
+					listOfGuests[j].getName().equalsIgnoreCase("Miguel") )
 					break;
-			if( j < dorms[0].getRooms()[i].getGuests().length )
+			if( j < dorms[0].getRooms()[i].getMaxCapacity() )
 				break;
-			i++;
 		}
-		dorms[0].acceptGuest( dorms[0].getRooms()[i].getRoomNum(), guests.get(5) );
-	
+		dorms[0].acceptGuest( i+1, guests.get(5) );
 		
-
-		/* Provide your code to call displayDorms() in
-		   class DormDriver. */
+		
+		
 		dormDriver.displayDorms(dorms);
-
+		
 		   
 		guests = null;
 		dorms = null;
