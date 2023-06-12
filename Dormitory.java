@@ -13,7 +13,6 @@ public class Dormitory {
 			maxRoomCapacity > 0 ) {
 			this.name = name;
 			this.numberOfRooms = numberOfRooms;
-			this.maxRoomCapacity = maxRoomCapacity;
 			rooms = new Room[numberOfRooms];
 			
 			for( i = 0; i < rooms.length; i++ )
@@ -38,7 +37,7 @@ public class Dormitory {
 	public boolean acceptGuest(int roomNum, Person guest) {
 		int i;
 		if(guest != null)
-			for( i = 0; i < rooms.length; i++ )
+			for( i = 0; i < numberOfRooms; i++ )
 				if( rooms[i].getRoomNum() == roomNum )
 					return rooms[i].addGuest(guest);
 		return false;	
@@ -46,7 +45,7 @@ public class Dormitory {
 	
 	public Person[] getListOfGuests(int roomNumber) {
 		int i;
-		for( i = 0; i < rooms.length; i++ )
+		for( i = 0; i < numberOfRooms; i++ )
 			if( rooms[i].getRoomNum() == roomNumber )
 				return rooms[i].getGuests();
 		return null;
@@ -57,6 +56,4 @@ public class Dormitory {
 	private String name; // dormitory's name
 	private int numberOfRooms; // number of rooms in the dormitory
 	private Room[] rooms;
-	private int maxRoomCapacity; // maximum number of guests per room
-
 }
