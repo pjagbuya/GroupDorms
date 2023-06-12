@@ -52,10 +52,6 @@ public class Dormitory {
 		return null;
 	}
 	
-	public int getMaxRoomCapacity() {
-		return maxRoomCapacity;
-	}
-	
 
 	
 	private String name; // dormitory's name

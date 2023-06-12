@@ -108,13 +108,13 @@ public class DormDriver
 		for( i = 0; i < guests.size(); i++ ) {
 			if( guests.get(i).getNationality().equalsIgnoreCase("Filipino") ) {
 				j = 1;
-				while( j <= dorms[1].getMaxRoomCapacity() &&
+				while( j <= dorms[1].getRooms()[0].getGuests().length &&
 					dorms[0].acceptGuest( j, guests.get(i) ) == false)
 					j++;
 				}
 			else {
 				j = 1;
-				while( j <= dorms[1].getMaxRoomCapacity() &&
+				while( j <= dorms[1].getRooms()[0].getGuests().length &&
 					dorms[1].acceptGuest( j, guests.get(i) ) == false)
 					j++;
 			}
