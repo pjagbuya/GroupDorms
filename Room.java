@@ -25,7 +25,7 @@ public class Room
 	
 	/**
 	 * This method returns true if the guest is successfully added, otherwise
-	 * it returns false
+	 * it returns false. It also returns false if the guest is null.
 	 * 
 	 * @param guest is a Person that is trying to be added to a room
 	 * @return true if the guest is added successfully added to the room, otherwise
@@ -34,6 +34,11 @@ public class Room
 	public boolean addGuest(Person guest)
 	{ 
         int i = 0;
+
+		if(guest == null){
+			return false;
+		}
+
 		while( i < MAX && guests[i] != null )
 			i++;
 		if( i < MAX ) {
@@ -113,12 +118,18 @@ public class Room
 
 	/**
 	 * This method rmeoves a guest based on the given parameter as index
-	 * of an array in the list of guests
+	 * of an array in the list of guests. It first checks if the given index is
+	 * negative or over the maximum capacity, it would return if these conditions
+	 * are true.
 	 * 
 	 * @param index the number representing the index in the array of guests
 	 */
 	public void removeGuest(int index)
 	{
+		if(index < 0 || index >= MAX){
+			return;
+		}
+
 		if( guests[index] != null ) {
 			guests[index] = null;
 			size--;

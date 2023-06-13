@@ -13,8 +13,8 @@ public class Dormitory {
 	 * This is a constructor that makes a Dormitory and initializes
 	 * the name and number of its rooms based on the parameters. 
 	 * The capacity of a room is by default set to 6
-	 * @param name
-	 * @param numberOfRooms
+	 * @param name the String name representing the Dormitory
+	 * @param numberOfRooms number of rooms in this Dormitory
 	 */
 	public Dormitory(String name, int numberOfRooms) {
 		this(name, numberOfRooms, 6);
@@ -40,9 +40,8 @@ public class Dormitory {
 			maxRoomCapacity > 0 ) {
 			this.name = name;
 			this.numberOfRooms = numberOfRooms;
-			this.maxRoomCapacity = maxRoomCapacity;
 			rooms = new Room[numberOfRooms];
-			
+			// Instantiate a new room by passing parameter attribute of the index and maxRoomCapacity
 			for( i = 0; i < rooms.length; i++ )
 				rooms[i] = new Room(i+1, maxRoomCapacity);
 		}
@@ -91,7 +90,7 @@ public class Dormitory {
 	 */
 	public boolean acceptGuest(int roomNum, Person guest) {
 		int i;
-		if(guest != null)
+		if(guest != null && roomNum > 0 && roomNum <= numberOfRooms)
 			for( i = 0; i < rooms.length; i++ )
 				if( rooms[i].getRoomNum() == roomNum )
 					return rooms[i].addGuest(guest);
@@ -118,7 +117,7 @@ public class Dormitory {
 	
 	private String name; // dormitory's name
 	private int numberOfRooms; // number of rooms in the dormitory
-	private Room[] rooms;
-	private int maxRoomCapacity; // maximum number of guests per room
+	private Room[] rooms;	// array of instantiated rooms
+	
 
 }
