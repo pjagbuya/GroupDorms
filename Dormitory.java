@@ -37,7 +37,8 @@ public class Dormitory {
 		if(	name != null &&
 			name.length() > 0 &&
 			numberOfRooms > 0 &&
-			maxRoomCapacity > 0 ) {
+			maxRoomCapacity > 0 )
+		{
 			this.name = name;
 			this.numberOfRooms = numberOfRooms;
 			rooms = new Room[numberOfRooms];
@@ -89,11 +90,10 @@ public class Dormitory {
 	 * @return true if the guest is successfully added in the room, false otherwise
 	 */
 	public boolean acceptGuest(int roomNum, Person guest) {
-		int i;
-		if(guest != null && roomNum > 0 && roomNum <= numberOfRooms)
-			for( i = 0; i < rooms.length; i++ )
-				if( rooms[i].getRoomNum() == roomNum )
-					return rooms[i].addGuest(guest);
+		if(	guest != null &&
+			roomNum >= 1 &&
+			roomNum <= numberOfRooms )
+			return rooms[roomNum-1].addGuest(guest);
 		return false;	
 	}
 	
@@ -106,10 +106,8 @@ public class Dormitory {
 	 * @return the array of Person representing the guests in a room
 	 */
 	public Person[] getListOfGuests(int roomNumber) {
-		int i;
-		for( i = 0; i < rooms.length; i++ )
-			if( rooms[i].getRoomNum() == roomNumber )
-				return rooms[i].getGuests();
+		if( roomNumber >= 1 && roomNumber <= numberOfRooms )
+				return rooms[roomNumber-1].getGuests();
 		return null;
 	}
 	
